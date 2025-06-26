@@ -70,7 +70,7 @@ resource "aws_iam_role_policy_attachment" "codepipeline_admin_access" {
 }
 
 resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild-role-for-static-website"
+  name = "codebuild-role-for-static-website-3"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
