@@ -1,5 +1,6 @@
+
 resource "aws_iam_role" "codepipeline_role" {
-  name = "codepipeline-role-for-s3-deployment-3"
+  name = var.codepipeline_role_name
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -16,7 +17,7 @@ resource "aws_iam_role" "codepipeline_role" {
 }
 
 resource "aws_iam_role_policy" "codepipeline_s3_policy" {
-  name = "codepipeline-s3-access-policy-3"
+  name = var.codepipeline_policy_name
   role = aws_iam_role.codepipeline_role.id
 
   policy = jsonencode({
@@ -70,7 +71,7 @@ resource "aws_iam_role_policy_attachment" "codepipeline_admin_access" {
 }
 
 resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild-role-for-static-website-3"
+  name = var.codebuild_role_name
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -87,7 +88,7 @@ resource "aws_iam_role" "codebuild_role" {
 }
 
 resource "aws_iam_role_policy" "codebuild_s3_policy" {
-  name = "codebuild-s3-access-policy-3"
+  name = var.codebuild_policy_name
   role = aws_iam_role.codebuild_role.id
 
   policy = jsonencode({
@@ -120,7 +121,6 @@ resource "aws_iam_role_policy" "codebuild_s3_policy" {
   })
 }
 
-# New attachment for the CodeBuild role
 resource "aws_iam_role_policy_attachment" "codebuild_admin_access" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
