@@ -1,37 +1,30 @@
+
 provider "aws" {
-  region = "eu-north-1"
+  region = var.region
 }
 
 resource "aws_s3_bucket" "static_website_bucket" {
-  bucket = "vardhan-bucket-2398027" 
+  bucket = var.bucket_name
 
   website {
-    index_document = "index.html"
+    index_document = var.index_document
   }
 
-  tags = {
-    Project     = "StaticWebsiteDeployment"
-    Environment = "Production"
-  }
+  tags = var.tags
 }
-
 
 resource "aws_s3_bucket_public_access_block" "static_website_bucket_public_access_block" {
   bucket = aws_s3_bucket.static_website_bucket.id
 
-
-  block_public_acls       = false 
+  block_public_acls       = false
   block_public_policy     = false
-  ignore_public_acls      = false 
+  ignore_public_acls      = false
   restrict_public_buckets = false
 }
-
-
 
 resource "aws_s3_bucket_policy" "static_website_bucket_policy" {
   bucket = aws_s3_bucket.static_website_bucket.id
 
- 
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
@@ -47,7 +40,6 @@ resource "aws_s3_bucket_policy" "static_website_bucket_policy" {
     ]
   })
 
- 
   depends_on = [aws_s3_bucket_public_access_block.static_website_bucket_public_access_block]
 }
 
